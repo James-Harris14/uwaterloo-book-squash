@@ -27,7 +27,7 @@ NUM_COURTS = 4
 
 def get_available_courts_url_for_day(day):
 	today = datetime.date.today()
-	if day > today.day:
+	if day >= today.day:
 		return AVAIL_URL.format(today.month, day, today.year)
 	
 	return '' # fail
