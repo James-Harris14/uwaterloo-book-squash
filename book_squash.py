@@ -14,9 +14,7 @@ AVAIL_URL = 'https://warrior.uwaterloo.ca/CourtReservation/GetReservation'\
 	'Id=00000000-0000-0000-0000-000000000000&date={}/{}/{}'
 RES_CONF = 'https://warrior.uwaterloo.ca/CourtReservation/GetReservationConfirmation'
 BOOK_URL = 'https://warrior.uwaterloo.ca/CourtReservation/ReserveCourt'
-TIMES = ['6:30 AM','7:30 AM','8:30 AM','9:30 AM','10:30 AM','11:30 AM','12:30 PM',
-	'1:30 PM','2:30 PM','3:30 PM','4:30 PM','5:30 PM','6:30 PM','7:30 PM',
-	'8:30 PM','9:30 PM','10:30 PM','11:30 PM']
+TIMES = []
 COURTS = ['North American 1 (Court 07)','International 1 (Court 08)',
 	'International 2 (Court 09)', 'North American 2 (Court 10)']
 FACILITY_IDS = ['5e568875-dadf-47bb-9080-ad4c4df145c1',
@@ -44,8 +42,12 @@ def request_booking_date(session):
 	date = input('What day number (in this month) would you like to book squash? ')
 	r = s.get(get_available_courts_url_for_day(int(date)))
 	soup = BeautifulSoup(r.content, 'html.parser')
-	rows = soup.findAll('table')[1].findAll('tr') # get second table in html; get all rows in the table
-	for i, row in enumerate(rows[1:]): # ignore first row (header)
+	time_rows = soup.findAll('table')[0].findAll('tr')
+	for tr in time_rows[1:]: #get all time slots
+		TIMES.append(tr.find('div').text.split('-')[0].strip())
+
+	avail_rows = soup.findAll('table')[1].findAll('tr') # get second table in html; get all rows in the table
+	for i, row in enumerate(avail_rows[1:]): # ignore first row (header)
 		avail_for_time = [] # True = avail, False = taken
 		for td in row.findAll('td'):
 			avail_for_time.append(td.text.strip() == 'Reserve')
