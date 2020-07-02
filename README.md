@@ -1,3 +1,5 @@
+*Update:* UWaterloo has updated their website and this script doesn't seem to work anymore
+
 # uwaterloo-book-squash
 Book squash courts (easily!) at University of Waterloo. I created this because booking squash courts through the University of Waterloo athletics website makes me want to throw my computer out of the window.
 
